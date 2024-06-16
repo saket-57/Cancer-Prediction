@@ -5,16 +5,28 @@ Created on Fri May 24 12:43:23 2024
 @author: dell
 """
 
+import os
 import numpy as np 
 import pickle
 import streamlit as st
 
+
+
+# Set page configuration
+st.set_page_config(page_title="Cancer Predictor",
+                   layout="wide",
+                   page_icon="🧑‍⚕️")
+
+# getting the working directory of the main.py
+working_dir = os.path.dirname(os.path.abspath(__file__))
+
 # loading the saved model
-loaded_model = pickle.load(open('trained_model.sav','rb'))
-loaded_scaler = pickle.load(open('scaler_file.sav','rb'))
+loaded_model = pickle.load(open(f'{working_dir}/models/trained_model.sav','rb'))
+loaded_scaler = pickle.load(open(f'{working_dir}/models/scaler_file.sav','rb'))
+
 #creating a function for prediction
 
-def breast_cancer_prediction(input_data):
+def cancer_prediction(input_data):
     
     #change the input data to numpy array
     input_data_as_numpy_array = np.asarray(input_data)
@@ -35,12 +47,9 @@ def breast_cancer_prediction(input_data):
   	print('The tumor is Malignant')
 	else:
  	print('The tumor is Benign')
-  
-    
-def main():
     
     #giving a title
-    st.title('Breast Cancer Prediction Web App')
+    #st.title('Breast Cancer Prediction Web App')
     
     #taking input from the user
    #test_values = (st.text_input("Input whole test value"))
@@ -171,14 +180,12 @@ def main():
                                               ]
     
     user_input = [float(x) for x in user_input]
-    diagnosis = breast_cancer_prediction(user_input)
+    diagnosis = cancer_prediction(user_input)
     
         
     st.success(diagnosis)
         
     
-if __name__ == '__main__':
-    main()
     
 
     
